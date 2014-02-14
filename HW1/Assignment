@@ -1,9 +1,11 @@
 Network Programming Homework 1
 Question:
-Please write a program that can play Black Jack with computer. The rules of the Black Jack are listed on the following sentences.
+Please write a program that can play Black Jack with computer. The rules of the Black 
+Jack are listed on the following sentences.
 
 Rules:
-	1. The player and computer are dealt an initial two-card hand and add together the value of their cards.
+	1. The player and computer are dealt an initial two-card hand and add together 
+	   the value of their cards.
 		Face cards (kings, queens, and jacks) are counted as ten points. 
 		Ace is counted as 1 point or 11 points. 
 		Other cards are counted as the numeric value shown on the card.
@@ -11,14 +13,20 @@ Rules:
 		"hit" to take an additional card, 
 		"stand" to take no more cards, 
 		"double" to increase the initial bet (The initial bet is 1 coin) by up to 100%.
-	3. The maximal number of card hold on the player or computer is 5, and each one has 10 coins.
-	4. The hand value is to count all the cards hold on the player or computer. The player or computer has to take hits until his hand value larger or equal to 17. The hand value larger than 21 is "busting".
+	3. The maximal number of card hold on the player or computer is 5, and each one 
+	   has 10 coins.
+	4. The hand value is to count all the cards hold on the player or computer. The 
+	   player or computer has to take hits until his hand value larger or equal to 17. 
+	   The hand value larger than 21 is "busting".
 	5. The player ( computer ) wins the bet when:
-		The hand value of player’s (computer’s) first two cards is 21, and the other one is not.
-		The number of card hold on the player’s (computer) is 5, and the hand value is less or equal to 21. In the case, the bet is double.
+		The hand value of player’s (computer’s) first two cards is 21, and the other one 
+		is not.
+		The number of card hold on the player’s (computer) is 5, and the hand value is 
+		less or equal to 21. In the case, the bet is double.
 		The hand value of player’s (computer’s) cards larger than that of the other one.
 	6. In the tie case, no one wins the bet. 
-	7. The one who lost all his money is the loser, and the other one is the winner. The game should be executed until the player or computer is the winner.
+	7. The one who lost all his money is the loser, and the other one is the winner. 
+	   The game should be executed until the player or computer is the winner.
 
 Program Structure:
 	1. You should implement your programs using C/C++.
@@ -27,12 +35,17 @@ Program Structure:
 		b. Help function: myblackjack -h
 
 Requirement:
-	Your C/C++ programs should be compiled by gnu C/C++ compiler, and can be running on UNIX/Linux based machine. If your programs cannot be complied by gnu C/C++ compiler, or cannot not be running on UNIX/Linux based virtual machine and real machine, your programs will be treat as garbage.
+	Your C/C++ programs should be compiled by gnu C/C++ compiler, and can be running on 
+	UNIX/Linux based machine. If your programs cannot be complied by gnu C/C++ compiler, 
+	or cannot not be running on UNIX/Linux based virtual machine and real machine, your 
+	programs will be treat as garbage.
 
 Hand in and Deadline:
-	You should submit your programs and report at E_campus before the deadline shown on the E_campus.
+	You should submit your programs and report at E_campus before the deadline shown on 
+	the E_campus.
 
 Homework Submission Format:
 	1. A listing of your source code.
-	2. A report that briefly describes the design and implementation of the program architecture.
+	2. A report that briefly describes the design and implementation of the program 
+	   architecture.
 
