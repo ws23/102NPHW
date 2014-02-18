@@ -23,7 +23,8 @@ Rules:
 		is not.
 		The number of card hold on the player’s (computer) is 5, and the hand value is 
 		less or equal to 21. In the case, the bet is double.
-		The hand value of player’s (computer’s) cards larger than that of the other one.
+		The hand value of player’s (computer’s) cards larger than that of the other one, 
+		and the hand value of player is not “busting".
 	6. In the tie case, no one wins the bet. 
 	7. The one who lost all his money is the loser, and the other one is the winner. 
 	   The game should be executed until the player or computer is the winner.
