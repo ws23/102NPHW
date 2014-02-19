@@ -1,7 +1,11 @@
+// Initial Constant
+
 #define PLAYER 2
-#define BET 10
+
+// ==============================================
 
 void showHelp(); // 顯示說明
 void deal(); // 發牌
-int select(); // 動作
-
+int selectOpt(int); // 動作
+int judgeWin(); // 判斷最終輸贏
+int judge(); // 判斷輸贏
