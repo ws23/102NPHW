@@ -12,7 +12,7 @@ int main(int argc, char *argv[]){
 	// begin the game
 	while(1){
 		deal();
-		tmp =  judge();
+		tmp =  judgeIni();
 		if(tmp!=-1)
 			continue;
 		// do the option
@@ -28,6 +28,7 @@ int main(int argc, char *argv[]){
 		if(tmp!=-1)
 			break;
 		printf("==================================================\n");
+		getchar();
 	}
 	return 0;
 }
