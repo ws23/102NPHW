@@ -1,1 +1,66 @@
+================================================= Update Date: 2014.2.20
+[How To INSTALL]
 
+Use the "make" command and complete Installation, 
+
+------------------------------------------------------------------------
+
+[How To Use]
+
+./myblackjack        to play game. 
+./myblackjack -h     to see the rules of the game. 
+
+------------------------------------------------------------------------
+
+[Initial Constant]
+
+src/blackJack.h
+	#define PLAYER	-> The number means how many player in this game. 
+	
+src/blackJack.c
+	const int Bet;					-> The initial bet of each player. 
+	const int SELF;					-> The ID of the player which is controll by user. 
+	const char pName[PLAYER][100];	-> The name of each player. 
+
+------------------------------------------------------------------------
+
+[Source Code & Function List]
+
+src/main.c
+	
+src/blackJack.h src/blackJack.c
+	Public(.h):
+		void showHelp();	-> Show the rules of the game. 
+		void deal();		-> Deal the game. 
+		int selectOpt(int);	-> Give the select option. 
+		int judgeWin();		-> Judge who is the winner of the game. 
+		int judge();		-> Judge who is the winner of the round. 
+		int judgeIni();		-> Judge if anybody get 21 points initial.
+
+	Private:
+		void iniAgain();			-> Not first initialization of the game. 
+		void ini();					-> The first initialization of the game. 
+		void swap();				-> Do swap. 
+		void shuffle();				-> Do shuffle. 
+		void getPoint(int);			-> Get the point by card ID. 
+		void countPoints(int);		-> Get the summary points of player. 
+		void showCard(int);			-> Show the card by card ID. 
+		void showCards();			-> Show the cards of player. 
+		int getTopCard();			-> Get a new card. 
+		void processBet(int, int);	-> Give the bet to the winner. 
+		void busting(int);			-> Mark the player if he or she is busting. 
+		char compOpt(int);			-> Use random to let the computer select the option. 
+
+------------------------------------------------------------------------
+
+[Flow]
+
+shuffle -> deal -> judge if anyone have 21 points --|has winner|--> process the bet -> back to shuffle
+                                                  --|or not|--> all player select option -> judge -> process the bet -> back to shuffle
+
+------------------------------------------------------------------------
+
+[Other]
+
+102-2 Homework 1 in the course "Networking Programming"
+made by 資工二 410121021 林育慈
