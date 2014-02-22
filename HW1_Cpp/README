@@ -1,0 +1,40 @@
+================================================= Update Date: 2014.2.22
+[How To INSTALL]
+
+Use the "make" command and complete Installation, 
+
+------------------------------------------------------------------------
+
+[How To Use]
+
+./myblackjack        to play game. 
+./myblackjack -h     to see the rules of the game. 
+
+------------------------------------------------------------------------
+
+[Initial Constant]
+
+src/blackJack.h
+	
+src/blackJack.cpp
+------------------------------------------------------------------------
+
+[Source Code & Function List]
+
+src/main.c
+	
+src/blackJack.h src/blackJack.c
+
+------------------------------------------------------------------------
+
+[Flow]
+
+shuffle -> deal -> judge if anyone have 21 points --|has winner|--> process the bet -> back to shuffle
+                                                  --|or not|--> all player select option -> judge -> process the bet -> back to shuffle
+
+------------------------------------------------------------------------
+
+[Other]
+
+102-2 Homework 1 in the course "Networking Programming"
+made by 資工二 410121021 林育慈
