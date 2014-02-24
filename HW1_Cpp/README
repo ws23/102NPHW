@@ -1,4 +1,4 @@
-================================================= Update Date: 2014.2.22
+================================================= Update Date: 2014.2.24
 [How To INSTALL]
 
 Use the "make" command and complete Installation, 
@@ -21,9 +21,9 @@ src/blackJack.cpp
 
 [Source Code & Function List]
 
-src/main.c
+src/main.cpp
 	
-src/blackJack.h src/blackJack.c
+src/blackJack.h src/blackJack.cpp
 
 ------------------------------------------------------------------------
 
