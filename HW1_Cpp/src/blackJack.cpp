@@ -1,59 +1,138 @@
-/*class poker{
-	private:
-		int card[52];
-		int numCards;
-	public:
-		poker();
-		int getCard(int);
-		void shuffle();
-		int dealCard();
-		string showCard(int);
-};
-*/
+#include <iostream>
+#include <string>
+#include <ctime>
+#include <cstdlib>
+#include "blackJack.h"
+using namespace std;
 
-/*
-class player{
-	private:
-		int bet;
-		int nbet;
-		int card[5];
-		int point;
-	public:
-		player();
-		void setCard(int);
-		void setBet(int);
-		void setNBet(int);
-		void setPoint(int);
-		int getCard();
-		int getBet();
-		int getNBet();
-		int getPoint();
-		string showCard();
-		void selectOpt();
-};
-*/
+// class "poker"
+poker::poker(){
+	for(int i=0;i<52;i++)
+		card[i] = i;
+	numCards = 52;
+	srand(time(NULL));
+}
 
-/*
-class computer:public player{
-	public:
-		computer();
-		void selectOpt();
-		string showCard();
-};
-*/
+int poker::getCard(int cIndex){
+	return card[cIndex];
+}
 
-/*
-class blackJack{
-	private:
-		player p;
-		computer c;
-		poker ini;
-	public:
-		void startGame();
-		void deal();
-		int judge();
-		int judgeWin();
-		void processBet(int, int);
-		void showHelp();
-};
-*/
+void poker::shuffle(){
+	int a, b, times;
+	times = rand()%50000+10000;
+	a = rand()%52;
+	b = rand()%52;
+	for(int i=0;i<times;i++){
+		int tmp = card[a];
+		card[a] = card[b];
+		card[b] = tmp;
+	}
+}
+
+int poker::dealCard(){
+	numCards--;
+	return card[numCards];
+}
+
+string poker::showCard(int cIndex){
+	string tmp = "";
+}
+
+// class "player"
+player::player(){
+	bet = 10;
+	nbet = 0;
+	point = 0;
+	numCards = 0;
+	for(int i=0;i<5;i++)
+		card[i] = -1;
+}
+
+void player::setCard(int cIndex){
+	card[numCards] = cIndex;
+	numCards++;
+}
+
+void player::setBet(int BET){
+	bet = BET;
+}
+
+void player::setNBet(int NBET){
+	nbet = NBET;
+}
+
+void player::setPoint(){
+	int count = 0;
+	for(int i=0;i<numCards;i++){
+		
+
+
+
+	}	
+}
+
+int player::getCard(){
+
+}
+
+int player::getBet(){
+
+}
+
+int player::getNBet(){
+
+}
+
+int player::getPoint(){
+
+}
+
+string player::showCard(){
+
+}
+
+void player::selectOpt(){
+
+}
+
+// class "computer"
+computer::computer(){
+
+}
+
+void computer::selectOpt(){
+
+}
+
+string computer::showCard(){
+
+}
+
+// class "blackJack"
+blackJack::blackJack(){
+
+}
+
+void blackJack::startGame(){
+
+}
+
+void blackJack::deal(){
+
+}
+
+int blackJack::judge(){
+
+}
+
+int blackJack::judgeWin(){
+
+}
+
+void blackJack::processBet(){
+
+}
+
+void blackJack::showHalp(){
+
+}

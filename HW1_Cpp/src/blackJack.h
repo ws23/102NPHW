@@ -16,6 +16,7 @@ class player{
 		int nbet;
 		int card[5];
 		int point;
+		int numCards;
 	public:
 		player();
 		void setCard(int);
@@ -43,6 +44,7 @@ class blackJack{
 		computer c;
 		poker ini;
 	public:
+		blackJack();
 		void startGame();
 		void deal();
 		int judge();
