@@ -183,7 +183,9 @@ void deal(){
 }
 
 void processBet(int pIndex, int other){
-	pBet[pIndex] += pbBet[pIndex]*other;	
+	int i;
+	for(i=0;i<PLAYER;i++)
+		pBet[pIndex] += pbBet[i]*other;	
 }
 
 void busting(int pIndex){

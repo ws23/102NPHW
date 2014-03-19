@@ -23,7 +23,6 @@ class player{
 		void setBet(int);
 		void setNBet(int);
 		void setPoint(int);
-		int getCard();
 		int getBet();
 		int getNBet();
 		int getPoint();
