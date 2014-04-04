@@ -60,6 +60,20 @@ int doStand(player *p){
 	return 0;
 }
 
+player* judgeIni(player *p1, player *p2){
+	player *tmp = NULL;
+	if(p1->points==21 && p2->points!=21)
+		tmp = p1;
+	if(p1->points!=21 && p2->points==21)
+		tmp = p2; 
+	if(tmp!=NULL){
+		tmp->coins += tmp->bets; 
+		p1->bets = 0;
+		p2->bets = 0;
+	}
+	return tmp;
+}
+
 player* judgeWinner(player *p1, player *p2){
 	player *tmp = NULL;
 
@@ -198,6 +212,10 @@ int doSelect(player *p){
 int autoSelect(player *p){
 	int choice;
 	choice = rand()%3 + 1;
+	while(choice==2 && p->points<17)
+		choice = rand()%3 + 1;
+	if(p->points>=20)
+		choice = 2;
 	return choice; 
 }
 
