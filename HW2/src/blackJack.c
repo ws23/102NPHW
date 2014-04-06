@@ -64,14 +64,24 @@ player* judgeIni(player *p1, player *p2){
 	player *tmp = NULL;
 	if(p1->points==21 && p2->points!=21)
 		tmp = p1;
-	if(p1->points!=21 && p2->points==21)
+	else if(p1->points!=21 && p2->points==21)
 		tmp = p2; 
-	if(tmp!=NULL){
-		tmp->coins += tmp->bets; 
-		p1->bets = 0;
-		p2->bets = 0;
-	}
+	if(tmp!=NULL)
+		giveBet(tmp, 1);
 	return tmp;
+}
+
+int judgeIniV(int p1, int p2){
+	int tmp = 0;
+	if(p1==21 && p2!=21)
+		tmp = 1; 
+	else if(p1!=21 && p2==21)
+		tmp = 2;
+	return tmp;
+}
+
+void giveBet(player* p, int mode){
+	p->coins += p->bets*mode + p->bets;
 }
 
 player* judgeWinner(player *p1, player *p2){
@@ -91,9 +101,7 @@ player* judgeWinner(player *p1, player *p2){
 	else if(p2->numCard==5 && p2->points<=21)
 		tmp = p2;
 	if(tmp!=NULL){
-		tmp->coins += tmp->bets*2;
-		p1->bets = 0;
-		p2->bets = 0;
+		giveBet(tmp, 2);
 		return tmp;
 	}
 	/* Judge Point */
@@ -110,11 +118,45 @@ player* judgeWinner(player *p1, player *p2){
 	else if(p2->points<=21)
 		tmp = p2;
 	if(tmp!=NULL)
-		tmp->coins += tmp->bets;
-	p1->bets = 0;
-	p2->bets = 0;
+		giveBet(tmp, 1);
 	return tmp;
 }
+
+int judgeWinnerV(int p1, int n1, int p2, int n2){
+	int tmp = 0;
+
+	/* Judge have 5 hand cards */
+	if(n1==5 && p1<=21){
+		if(n2==5 && p2<=21){
+			if(p1>p2)
+				tmp = 3;
+			else if(p1<p2)
+				tmp = 4;
+		}
+		else
+			tmp = 3;
+	}
+	else if(n2==5 && p2<=21)
+		tmp = 4;
+	if(tmp!=0)
+		return tmp;
+
+	/* Judge Point */
+	if(p1<=21){
+		if(p2<=21){
+			if(p1>p2)
+				tmp = 1;
+			else if(p1<p2)
+				tmp = 2;
+		}
+		else
+			tmp = 1;
+	}
+	else if(p2<=21)
+		tmp = 2;
+	return tmp;
+}
+
 void showHelp(){
 	FILE *fin;
 	char str; 

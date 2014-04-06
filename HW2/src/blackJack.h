@@ -26,8 +26,11 @@ void shuffle();
 int dealCard(); 
 int doDouble(player*);
 int doStand(player*);
+void giveBet(player*, int);
 player* judgeIni(player*, player*);
 player* judgeWinner(player*, player*); 
+int judgeIniV(int, int);
+int judgeWinnerV(int, int, int, int);
 void showHelp();
 
 // player
