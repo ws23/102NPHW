@@ -37,7 +37,6 @@ void showHelp();
 void newPlayer(player*, char*, int);
 void iniPlayer(player*, int); 
 int autoBet(player*);
-int againGame(); 
 int getCard(player*, int); 
 int doSelect(player*); 
 int autoSelect(player*);

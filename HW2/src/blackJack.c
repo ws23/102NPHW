@@ -194,20 +194,6 @@ int autoBet(player *p){
 	return tmp;
 }
 
-int againGame(){
-	int choice; 
-	do{
-		printf("Do you want to play again? [1. Yes/ 2. No]\n> "); 
-		scanf("%1d", &choice);
-		if(choice==1)
-			return 1;
-		else if(choice==2)
-			return 0;
-		printf("Input Error. Choose again. \n");
-	} while(1);
-	return -1;
-}
-
 int getCard(player *p, int c){
 	int Ace, tmp, i;
 	Ace = tmp = 0;

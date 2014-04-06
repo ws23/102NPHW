@@ -1,0 +1,177 @@
+================================================= Update Date: 2014.4.6
+[How To INSTALL]
+
+Use the "make" command and complete Installation, 
+
+------------------------------------------------------------------------
+
+[How To Use]
+
+./myblackjack       to play game. 
+./myblackjack -h    to see the rules of the game. 
+./myblackjack -p	to play game of pipe version
+./myblackjack -m	to play game of message queue version
+./myblackjack -s	to play game of shared memory with semaphore version
+./myblackjack -t	to play game of pthread with synchronization mechanism version
+
+------------------------------------------------------------------------
+
+[Source Code & Function List]
+
+src/main.c	
+
+		void normalVersion();
+			to play the BlackJack that doesn't use any process commuicate. 
+
+		void showExe(char*);
+			to show the arguments of this program. 
+
+src/blackJack.h src/blackJack.c
+
+	public(.h):
+
+		typedef struct _pokerCard pokerCard;
+			the structure of the poker card that put on desk, include the cards and the number of cards on desk. 
+
+		typedef struct _player player;
+			the structure of the player message, include the coins, bets, name, points, cards on hand and the number of cards. 
+
+		void newGame();
+			to take a deck of new cards and initialization the cards on desk. 
+
+		void iniGame();
+			to initialization the cards on desk. 
+
+		void shuffle();
+			to shuff the cards. 
+
+		void doDouble(player*);
+			to check the player's coins and do the "Double" movement. 
+		
+		void doStand(player*);
+			to check the player's points if he/she can "Stand" or not. 
+
+		void giveBet(player*, int);
+			to give the bet to player. 
+		
+		player* judgeIni(player*, player*);
+			to judge if any player get 21 points in initial hand-cards, return the address of the player infomation. 
+
+		player* judgeWinner(player*, player*);
+			to judge the winner from 2 player, return the address of the player infomation. 
+
+		int judgeIniV(int, int);
+			to judge if any player get 21 points in initial hand-cards, argumant 1 means the player 1's points, argument 2 means player 2's.
+		   	The return value will be 0, 1 or 2, 0 means no one wins, 1 or 2 means who wins. 
+
+		int judgeWinnerV(int, int, int, int);
+			to judge the winner from 2 player, argument 1, 2 means the player 1's points and the number of his hand-cards, 3, 4 means player 2's. 
+			The return value will be 0, 1 or 2, 0 means tie, 1 or 2 means the winner. 
+
+		void showHelp();
+			to show the rules of the game. It will appear the text in "Rules" file. 
+
+		void newPlayer(player*, char*, int);
+			to initialization the player information, include the coins and name. 
+
+		void iniPlayer(player*, int);
+			to initialization the player infomation in each game, include the bets and gand-cards. 
+
+		int autoBet(player*);
+			to bet any bets of the player. It will return the value between 1 to player's coins randomly. 
+
+		int getCard(player*, int);
+			to do the movement that get a card. The argument 1 means who get card and 2 means the card's infomation. 
+		
+		int doSelect(player*);
+			to do the movement chosen. The return value 1, 2, 3 means "HIT", "STAND", "DOUBLE". 
+
+		int autoSelect(player*);
+			to do the movement chosen randomly. The return value 1, 2, 3 means "HIT", "STAND", "DOUBLE". 
+
+		void showCard(player*, int);
+			to show the hand-cards of player. The argument 2 means the mode, if it's 1 means appear the first card and 0 does not. 
+
+	private(.c): 	
+
+		void swap(int*, int*);
+			to swap the value of two argument. 
+
+
+src/sync.h src/sync.c
+
+	public(.h): 
+
+		void pthreadVersion();
+			to play game of pthread with synchronization version
+
+	private(.c): 
+
+		void* t_func1();
+			the first thread -> dealer and computer
+
+		void* t_func2();
+			the second thread -> player
+
+src/message.h src/message.c
+
+	public(.h):
+
+		void messageVersion();
+			to play game of message queue version
+
+	private(.c): 
+
+		void m_parent();
+			the parent process -> dealer(server) and computer
+
+		void m_child();
+			the chlid process -> player(client)
+
+src/sema.h src/sema.c
+
+	public(.h): 
+
+		void semaphoreVersion();
+			to play game of shared memory with semaphore version
+
+	private(.c):
+
+		void s_parent();
+			the parent process -> dealer(server) and computer
+
+		void s_child();
+			the child process -> player(client) 
+
+
+src/pipe.h src/pipe.c
+
+	public(.h): 
+
+		void pipeVersion();
+			to play game of pipe version
+
+	private(.c): 
+
+		void p_parent();
+			the parant process -> dealer(server) and computer
+
+		void p_child();
+			the child process -> player(client)
+
+------------------------------------------------------------------------
+
+[Environment]
+
+Operating System: 
+	Ubuntu 12.10, GNU/Linux
+
+Compiler:
+	gcc (Ubunti/Linaro 4.7.2-2ubuntu1) 4.7.2
+
+------------------------------------------------------------------------
+
+[Other]
+
+102-2 Homework 2 in the course "Networking Programming"
+made by 資工二 410121021 林育慈
