@@ -236,6 +236,8 @@ int getCard(player *p, int c){
 	p->points = tmp;
 	if(p->points>21)
 		return -1;
+	if(p->numCard>=5)
+		return -1;
 	return 0;
 }
 
