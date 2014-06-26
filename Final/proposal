@@ -1,0 +1,22 @@
+Network Programming Final Project Proposal
+410121021 資工二 林育慈
+
+
+Abstract
+	使用 SOCKET 去進行五子棋遊戲。
+
+Goal
+	1. 可以使兩台電腦的使用者進行「五子棋」遊戲。
+	2. 除了下棋指令之外，亦可進行聊天對話。
+	3. 若超過兩台電腦連線，第三台之後的電腦皆會被拒絕連線。
+
+Environment
+	Operating System: Ubuntu 12.04 LTS（GNU/Linux）
+	Programming Language: C（gcc 4.7.2） 
+
+Testing & Judge
+	1. 利用兩台的電腦（client）連上server後，進行遊戲，要測試以下狀況：
+	2. client 是否能正常連上 server？
+	3. 兩 client 是否能正常的進行遊戲、聊天？
+	4. server 端是否能正確的判斷輸贏？
+	5. 第三個 client 連線是否會被拒絕？
