@@ -15,8 +15,9 @@ Environment
 	Programming Language: C（gcc 4.7.2） 
 
 Testing & Judge
-	1. 利用兩台的電腦（client）連上server後，進行遊戲，要測試以下狀況：
-	2. client 是否能正常連上 server？
-	3. 兩 client 是否能正常的進行遊戲、聊天？
-	4. server 端是否能正確的判斷輸贏？
-	5. 第三個 client 連線是否會被拒絕？
+利用兩台的電腦（client）連上server後，進行遊戲，要測試以下狀況：
+	1. client 是否能正常連上 server？
+	2. 兩 client 是否能正常的進行遊戲、聊天？
+	3. server 端是否能正確的判斷輸贏？
+	4. 第三個 client 連線是否會被拒絕？
+	5. Log是否能正確的留下？
