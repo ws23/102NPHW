@@ -1,0 +1,10 @@
+[Sat Jun 28 14:50:54 2014] new client 127.0.0.1:40218, fd:4 
+[Sat Jun 28 14:50:56 2014] new client 127.0.0.1:40219, fd:5 
+[Sat Jun 28 14:56:14 2014] new client 127.0.0.1:40291, fd:4 
+[Sat Jun 28 14:56:16 2014] new client 127.0.0.1:40292, fd:5 
+[Sat Jun 28 14:57:02 2014] Error: commfd cannot bind. 
+[Sat Jun 28 14:59:23 2014] new client 127.0.0.1:40318, fd:4 
+[Sat Jun 28 14:59:24 2014] new client 127.0.0.1:40319, fd:5 
+[Sat Jun 28 15:01:24 2014] new client 127.0.0.1:40325, fd:4 
+[Sat Jun 28 15:01:26 2014] new client 127.0.0.1:40326, fd:5 
+[Sat Jun 28 15:01:59 2014] Error: commfd cannot bind. 

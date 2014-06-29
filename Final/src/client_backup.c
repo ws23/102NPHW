@@ -9,26 +9,87 @@
 #include <errno.h>
 #include <unistd.h>
 #include <string.h>
+#include <pthread.h>
 #include <netdb.h>
 
 #define MAXLINE 1024
 #define SERVPORT 15692
 
-int main(int argc, char *argv[]){
-	int clientNum, sockfd, rel; 
-	char msg[50], buff[MAXLINE], logStr[100], *tmp, in[MAXLINE]; 
-	struct sockaddr_in servaddr; 
-	struct hostent *host; 
-	pack data, rev; 
-	fd_set socket_set; 
+pthread_mutex_t count_mutex = PTHREAD_MUTEX_INITIALIZER; 
+pthread_cond_t condition_var = PTHREAD_COND_INITIALIZER; 
 
+void *input(); 
+void *process(); 
+
+int type, x, y, clientNum; 
+char msg[50]; 
+pthread_t thread1, thread2; 
+
+int main(int argc, char *argv[]){
 	if(argc!=2){
 		printf("usage: %s <IP Address>\n", argv[0]); 
 		exit(0); 
 	}
 
 	ini(); 
-	host = gethostbyname(argv[1]); 
+
+	pthread_create(&thread2, NULL, &process, (void*)argv[1]); 
+
+	pthread_join(thread2, NULL); 
+
+	exit(0); 
+}
+
+void *input(){
+	char in[50], *tmp; 
+	while(1){
+		printf("下棋：c <X座標> <Y座標>（例：c A 10）\n聊天：m <訊息>（例：m 安安你好！）\n> "); 
+		gets(in); 
+		tmp = strtok(in, " ");
+		if(*tmp=='c'||*tmp=='C'){
+			tmp = strtok(NULL, " "); 
+			if(tmp!=NULL)
+				x = *tmp-'A'+1; 
+			else{
+				printf("Command Error. \n"); 
+				continue; 
+			}
+			tmp = strtok(NULL, " "); 
+			if(tmp!=NULL)
+				y = atoi(tmp);
+			else{
+				printf("Command Error. \n"); 
+				continue; 
+			}	
+			tmp = strtok(NULL, " "); 
+			if(tmp!=NULL)
+				printf("Command Error. \n"); 
+			else
+				type = 1; 
+		}
+		else if(*tmp=='m'||*tmp=='M'){
+			tmp = strtok(NULL, " "); 
+			if(strlen(tmp)>45)
+				printf("Message is too long. \n"); 
+			else{
+				strcpy(msg, tmp); 
+				type = 2; 
+			}
+		}
+		else
+			printf("Command Error. \n"); 
+	}
+}
+
+void *process(char *servIP){
+	int sockfd; 
+	struct sockaddr_in servaddr; 
+	struct hostent *host; 
+	char buff[MAXLINE], logStr[100], *tmp; 
+	pack data, rev; 
+	fd_set socket_set; 
+
+	host = gethostbyname(servIP); 
 	sprintf(logStr, "hostname: %s, hostIP: %s", host->h_name, inet_ntoa(*(struct in_addr*)host->h_addr)); 
 	printf("%s\n", logStr); 
 	Log(logStr, 's'); 
@@ -45,14 +106,14 @@ int main(int argc, char *argv[]){
 	bzero(&servaddr, sizeof(servaddr)); 
 	servaddr.sin_family = AF_INET; 
 	servaddr.sin_port = htons(SERVPORT); 
-	if(inet_pton(AF_INET, argv[1], &servaddr.sin_addr)<=0){
-		sprintf(logStr, "inet_pton error for %s. ", argv[1]); 
+	if(inet_pton(AF_INET, servIP, &servaddr.sin_addr)<=0){
+		sprintf(logStr, "inet_pton error for %s. ", servIP); 
 		printf("%s\n", logStr); 
 		Log(logStr, 's');
 		exit(1); 
 	}
 	if(connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))<0){
-		sprintf(logStr, "Connect to %s Error. ", argv[1]); 
+		sprintf(logStr, "Connect to %s Error. ", servIP); 
 		printf("%s\n", logStr); 
 		Log(logStr, 's'); 
 		exit(1); 
@@ -65,83 +126,56 @@ int main(int argc, char *argv[]){
 
 	show(); 
 	printf("A"); 
+	pthread_create(&thread1, NULL, &input, NULL);
+	printf("B"); 
+	pthread_join(thread1, NULL);
+	printf("C"); 
+
 	while(1){
-		printf("B"); 
+		printf("a"); 
 		bzero(buff, MAXLINE); 
-		printf("C"); 
+		printf("b"); 
 		FD_ZERO(&socket_set); 
-		printf("D"); 
+		printf("c"); 
 		FD_SET(sockfd, &socket_set); 
-		printf("E"); 
+		printf("d");
 		FD_SET(0, &socket_set);
-		printf("F"); 
-			rel = select(6, &socket_set, (fd_set*)NULL, (fd_set*)NULL, (struct timeval*)0); 
-			printf("%d", rel);
-		if(rel>=0){
-			printf("G"); 
+		printf("e"); 	
+		if(select(6, &socket_set, (fd_set*)NULL, (fd_set*)NULL, (struct timeval*)0)){
+			printf("1"); 
 			if(FD_ISSET(0, &socket_set)){
-				printf("H"); 
+				printf("In0");
 				// hello 
-				printf("I"); 
 				data.cmd = 0u; 
 				data.length = 4; 
 				data.checksum = checksum(data); 
-				printf("J"); 
 				sprintf(buff, "%u %u %u", data.cmd, data.length, data.checksum); 
-				printf("K"); 
 				write(sockfd, buff, MAXLINE); 
-				printf("下棋：c <X座標> <Y座標>（ex. c A 10）\n聊天：m <訊息>（ex. m 安安你好！）※ 訊息勿超過40字元\n"); 
-				gets(in);
-				printf("[%s]\n", in);
-				tmp = strtok(in, " "); 
 				// chess
-				if(*tmp=='c'||*tmp=='C'){
+				if(type==1){
 					data.cmd = 1u; 
-					tmp = strtok(NULL, " "); 
-					data.length = 4+2;
-					if(tmp==NULL){
-						printf("Command Error. \n"); 
-						continue; 
-					}	
-					data.data[0] = *tmp-'A'+1;
-					tmp = strtok(NULL, " "); 	
-					if(tmp==NULL){
-						printf("Command Error. \n"); 
-						continue; 
-					}
-					data.data[1] = atoi(tmp); 
-					tmp = strtok(NULL, " "); 
-					if(tmp!=NULL)
-						continue; 
+					data.length = 4+2; 
+					data.data[0] = x; 
+					data.data[1] = y; 
 					data.checksum = checksum(data); 
 					sprintf(buff, "%u %u %u %d %d", data.cmd, data.length, data.checksum, data.data[0], data.data[1]); 
 					write(sockfd, buff, MAXLINE);
 					Log("Send Chess. ", 's'); 	
 				}
 				// chat
-				else if(*tmp=='m'||*tmp=='M'){
+				else if(type==2){
 					data.cmd = 2u; 
-					tmp = strtok(NULL, " "); 
-					if(strlen(tmp)>45){
-						printf("Message is too long. \n"); 
-						continue; 
-					}
-					else if(tmp==NULL){
-						printf("Command Error. \n"); 
-						continue; 
-					}
 					data.length = 4+strlen(msg); 
-					strcpy(data.data, tmp); 
+					strcpy(data.data, msg); 
 					data.checksum = checksum(data); 
 					sprintf(buff, "%u %u %u %s", data.cmd, data.length, data.checksum, data.data); 
 					write(sockfd, buff, MAXLINE); 
 					Log("Send Caht. ", 's'); 
-				}
-				else
-					printf("Command Error. \n"); 	
+				}	
 			}
+			printf("2"); 
 			if(FD_ISSET(sockfd, &socket_set)){
-				printf("Get Packet. \n"); 
+				printf("In Read"); 
 				bzero(buff, MAXLINE); 
 				read(sockfd, buff, MAXLINE); 
 				tmp = strtok(buff, " "); 
@@ -261,7 +295,10 @@ int main(int argc, char *argv[]){
 				show(); 
 			}
 		}
+		printf("XD\n"); 
 	}
+
 	close(sockfd); 
+	pthread_cancel(thread1); 
 	exit(0); 
 }

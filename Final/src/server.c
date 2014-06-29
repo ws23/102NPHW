@@ -10,7 +10,7 @@
 #include <errno.h>
 
 #define MAXLINE 1024
-#define SERVPORT 1243
+#define SERVPORT 15692
 
 typedef struct _client{
 	char IP[16], name[50]; 
@@ -18,7 +18,7 @@ typedef struct _client{
 } client; 
 
 int main(){
-	int i, j, sockfd, getlen, clientNum, clntfd, correct;  
+	int i, j, sockfd, getlen, clientNum, clntfd, correct, rel;  
 	char msg[MAXLINE], snd[MAXLINE], logStr[50], *tmp; 
 	struct timeval timeout; 
 	struct sockaddr_in revsock, commsock; 
@@ -46,40 +46,48 @@ int main(){
 	commsock.sin_port = htons(SERVPORT); 
 
 	if(bind(sockfd, (struct sockaddr*)&commsock, sizeof(commsock))<0){
-		printf("Socket Bind Error. \n"); 
+		perror("Socket Bind Error. \n"); 
 		Log("Socket Bind Error. ", 's'); 
 		exit(1); 
 	}
-
+	printf("Socket Bind Success. \n"); 
 	if(listen(sockfd, 2)<0){
 		printf("Socket Listen Error. \n"); 
 		Log("Socket Listen Error. ", 's'); 
 		exit(1); 
 	}
+	printf("Socket Listen Success. \n"); 
 
 	FD_ZERO(&socket_set); 
+	printf("a"); 
 	FD_SET(sockfd, &socket_set); 
-
+	printf("b"); 
 	while(1){
-		if(select(20, &socket_set, (fd_set*)NULL, (fd_set*)NULL, (struct timeval*)0)>=0){
+		printf("c"); 
+		rel = select(6, &socket_set, (fd_set*)NULL, (fd_set*)NULL, (struct timeval*)0); 
+		printf("%d", rel); 
+		if(rel>=0){
+			printf("QAQ");	
 			// add new client
 			if((clntfd = accept(sockfd, (struct sockaddr*)&revsock, &getlen))<0){
 				printf("Socket Accept Error. \n"); 
 				Log("Socket Accept Error. ", 's'); 
 				exit(1); 
-
-				strcpy(clnt[clientNum].IP, inet_ntoa(revsock.sin_addr)); 
-				clnt[clientNum].port = ntohs(revsock.sin_port); 
-				sprintf(logStr, "New Client %s:%d, fd: %d . ", clnt[clientNum].IP, clnt[clientNum].port, clntfd); 
-				printf("%s\n", logStr); 
-				Log(logStr, 's'); 
-				Log(logStr, 'c'); 
-				Log(logStr, 'm'); 
-
-				clnt[clientNum++].fd = clntfd;
 			}
+
+			strcpy(clnt[clientNum].IP, inet_ntoa(revsock.sin_addr)); 
+			clnt[clientNum].port = ntohs(revsock.sin_port); 
+			sprintf(logStr, "New Client %s:%d, fd: %d . ", clnt[clientNum].IP, clnt[clientNum].port, clntfd); 
+			printf("%s\n", logStr); 
+			Log(logStr, 's'); 
+			Log(logStr, 'c'); 
+			Log(logStr, 'm'); 
+
+			clnt[clientNum++].fd = clntfd;
+			printf("clntNum = %d\n", clientNum); 
+
 			// Process the packet from client	
-			else if(clientNum==2){
+//			if(clientNum==2){
 				for(i=0;i<2;i++){
 					bzero(msg, MAXLINE); 
 					bzero(snd, MAXLINE); 
@@ -109,7 +117,7 @@ int main(){
 									}
 									packet.cmd = 0; 
 									packet.length = 4+1; 
-									packet.data[0] = i; 
+									packet.data[0] = i+1; 
 									packet.checksum = checksum(packet); 
 									correct = 1; 
 								}
@@ -138,7 +146,7 @@ int main(){
 									packet.length = 4+1+2; 
 									packet.data[2] = packet.data[1]; 
 									packet.data[1] = packet.data[0]; 
-									packet.data[0] = i; 
+									packet.data[0] = i+1; 
 									correct = 1; 
 								}
 								else if(*tmp=='2'){ // chat (cmd, length, checksum, message)
@@ -164,7 +172,7 @@ int main(){
 									packet.length = 4+1+strlen(packet.data); 
 									for(j=strlen;j>0;j++)
 										packet.data[j] = packet.data[j-1]; 
-									packet.data[0] = i; 
+									packet.data[0] = i+1; 
 									correct = 1; 	
 								}
 								else{
@@ -206,7 +214,7 @@ int main(){
 							}
 						}
 					}
-				}
+//				}
 			}
 
 			FD_ZERO(&socket_set); 
