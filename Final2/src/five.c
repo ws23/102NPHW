@@ -55,8 +55,13 @@ void ini(){
 
 int chess(int p, int x, int y){
 	char logMsg[50]; 
-	sprintf(logMsg, "%s: %c%d\n", p==clientNum?"我":"敵", x+'A'-1, y); 
-	if(disk[MAX-y][x-1]==0){
+	if(clientNum!=0)
+		sprintf(logMsg, "%s: %c%d\n", p==clientNum?"我":"敵", x+'A'-1, y);
+	else
+		sprintf(logMsg, "%d: %c%d\n", p, x+'A'-1, y); 
+	if(x>MAX || y>MAX || x<0 || y<0)
+		return -1; 
+	else if(disk[MAX-y][x-1]==0){
 		disk[MAX-y][x-1] = p;
 		Log(logMsg, 'c'); 
 	}
@@ -67,7 +72,10 @@ int chess(int p, int x, int y){
 
 void chat(int p, char *s){
 	char tmp[50];
-	sprintf(tmp, "%s: %s", p==clientNum?"我":"敵", s);
+	if(clientNum!=0)
+		sprintf(tmp, "%s: %s", p==clientNum?"我":"敵", s);
+	else
+		sprintf(tmp, "%d: %s", p, s);
 	strcpy(msg[tail], tmp);
 	Log(strcat(tmp, "\n"), 'm'); 
 	tail++;
@@ -128,33 +136,51 @@ int Max(int a, int b){
 }
 
 int judge(){
-	int i, j; 
-	int black[MAX+2][MAX+2], white[MAX+2][MAX+2]; 
-	memset(black, 0, sizeof(black)); 
-	memset(white, 0, sizeof(white)); 
-	for(i=0;i<=MAX+1;i++){
-		black[i][0] = black[0][i] = black[MAX+1][i] = black[i][MAX+1] = 2; 
-		white[i][0] = white[0][i] = white[MAX+1][i] = white[i][MAX+1] = 1; 
-	}
-	for(i=1;i<=MAX;i++){
-		for(j=1;j<=MAX;j++){
-			// black
-			if(disk[i-1][j-1]==1){
-				white[i][j] = 0; 
-				black[i][j] = Max(Max(Max(black[i-1][j-1], black[i-1][j]), black[i-1][j+1]), black[i][j-1]); 
-				if(black[i][j]>=5)
-					return 1; 	
+	int i, j, k; 
+	for(i=0;i<MAX;i++){
+		for(j=0;j<MAX;j++){
+			if(disk[i][j]==0)
+				continue; 
+			// left
+			for(k=1;k<5;k++){
+				if(j-k<0)
+					break;
+				if(disk[i][j]!=disk[i][j-k])
+					break;
+				if(k==4)
+					return disk[i][j]; 
 			}
-			else if(disk[i-1][j-1]==2){
-				black[i][j] = 0; 
-				white[i][j] = Max(Max(Max(white[i-1][j-1], white[i-1][j]), white[i-1][j+1]), white[i][j-1]); 
-				if(white[i][j]>=5)
-					return 2; 
+			// up
+			for(k=1;k<5;k++){
+				if(i-k<0)
+					break;
+				if(disk[i][j]!=disk[i-k][j])
+					break;
+				if(k==4)
+					return disk[i][j]; 
 			}
-			else{
-				black[i][j] = white[i][j] = 0; 
-			}	
-
+			// left-up
+			for(k=1;k<5;k++){
+				if(i-k<0)
+					break;
+				if(j-k<0)
+					break;
+				if(disk[i][j]!=disk[i-k][j-k])
+					break;
+				if(k==4)
+					return disk[i][j]; 
+			}
+			// right-up
+			for(k=1;k<5;k++){
+				if(j+k>=MAX)
+					break;
+				if(i-k<0)
+					break;
+				if(disk[i][j]!=disk[i-k][j+k])
+					break;
+				if(k==4)
+					return disk[i][j]; 
+			}
 		}
 	}
 	return 0; 
